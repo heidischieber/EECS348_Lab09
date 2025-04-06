@@ -42,7 +42,7 @@ public:
         Matrix<T> result(_N); //creates a matrix of 0s called result 
             for (size_t i = 0; i < _N; i++){ //iterates from 0 to _N
                 for (size_t j = 0; j < _N; j++){ //iterates from 0 to _N
-                    int result_value = 0; //result value from multiplication 
+                    T result_value = 0; //result value from multiplication 
                     for (size_t z = 0; z < _N; z++){  //iterates from 0 to _N
                         result_value += get_value(i, z) * rhs.get_value(z, j);  //result_value stores multiplication of _matrix[i][z] times rhs[z][j]
                     } 
@@ -61,14 +61,14 @@ public:
         return _N; //returns _N
     }
     T sum_diagonal_major() const{ //sum of diagonal major funciton
-        int result = 0; //initializes result
+        T result = 0; //initializes result
         for (size_t i = 0; i < get_size(); i++){ //iterates from 0 to get_size()
             result = result + get_value(i, i); //result equals result plus value at _matrix[i][i] (gets values in major diagonal)
         }
         return result; //returns result 
     }
     T sum_diagonal_minor() const{ //sum of diagonal minor function
-        int result = 0; //initializes result
+        T result = 0; //initializes result
         int row = 0; //initializes row
         for (int i = get_size() - 1; i >= 0; i--){ //iterates from get_size() - 1 to 0
             result = result + get_value(row, i); //result equals result plus value at _matrix[row][i] (gets values in minor diaognal)
@@ -78,7 +78,7 @@ public:
     }
     void swap_rows(std::size_t r1, std::size_t r2){ //swap rows function 
         if (r1 >= 0 && r1 < get_size() && r2 >= 0 && r2 < get_size()){ //checks if inputs are within range
-            int temp; //initializes temp 
+            T temp; //initializes temp 
             for (size_t i = 0; i < get_size(); i++){ //iterates from 0 to get_size()
                 temp = get_value(r1, i); //temp is set to value at _matrix[r1][i]
                 set_value(r1, i, get_value(r2, i)); //_matrix[r1][i] is set to value at _matrix[r2][i]
@@ -88,7 +88,7 @@ public:
     }
     void swap_cols(std::size_t c1, std::size_t c2){ //swap cols function 
         if (c1 >= 0 && c1 < get_size()-1 && c2 >= 0 && c2 < get_size()-1){ //checks if inputs are within range
-            int temp; //initializes temp 
+            T temp; //initializes temp 
             for (size_t i = 0; i < get_size(); i++){ //iterates from 0 to get_size()
                 temp = get_value(i, c1); //temp is set to value at _matrix[c1][i]
                 set_value(i, c1, get_value(i, c2)); //_matrix[i][c1] is set to value at _matrix[i][c2]

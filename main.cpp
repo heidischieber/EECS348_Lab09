@@ -4,8 +4,8 @@
 #include <string> //allows access to all components of header string
 #include <sstream> //allows acces to all components of header sstream
 
-template <typename S>
-void matrix_operations(Matrix<S> m1, Matrix<S> m2){
+template <typename S> 
+void matrix_operations(Matrix<S> m1, Matrix<S> m2){ //matrix_operations function performs matrix operations on matrices m1 and m2 of type S 
     //create functions 
     std::cout<< "Matrix 1:" << std::endl; //displays "Matrix 1: "
     m1.print_matrix(); //calls print_matrix() function which will display matrix m1
@@ -160,12 +160,12 @@ int main(int argc, char *argv[]) {
 
     std::string line; //variable line ~ type: string
 
-    std::vector<std::vector<int> > matrix1_i; //variable matrix1 ~ a vector of vectors of ints
-    std::vector<std::vector<int> > matrix2_i; //variable matrix2 ~ a vector of vectors of ints 
-    std::vector<int> v_numI; //vector of ints called v_num
-    std::vector<double> v_numD; //vector of ints called v_num
-    std::vector<std::vector<double> > matrix1_d; //variable matrix1 ~ a vector of vectors of ints
-    std::vector<std::vector<double> > matrix2_d; //variable matrix2 ~ a vector of vectors of ints 
+    std::vector<std::vector<int> > matrix1_i; //variable matrix1_i ~ a vector of vectors of ints
+    std::vector<std::vector<int> > matrix2_i; //variable matrix2_i ~ a vector of vectors of ints 
+    std::vector<int> v_numI; //vector of ints called v_numI
+    std::vector<double> v_numD; //vector of doubles called v_numD
+    std::vector<std::vector<double> > matrix1_d; //variable matrix1_d ~ a vector of vectors of doubles
+    std::vector<std::vector<double> > matrix2_d; //variable matrix2_d ~ a vector of vectors of doubles 
     
     std::string num; //variable num ~ type: string
     std::size_t counter = 0; //variable counter ~ type; size_t and set to 0
@@ -176,40 +176,35 @@ int main(int argc, char *argv[]) {
         line.erase(std::remove(line.begin(), line.end(), '\n'), line.end()); // remove any trailing newline characters
         std::stringstream ss(line); // creates a stringstream of line called ss
         
-        // Read the first line to get the size of the matrices and type flag
-        if (counter == 0) {
-            ss >> size_n >> float_or_int; // first two values are size_n and float_or_int
-            std::cout << "Matrix size: " << size_n << std::endl;
-            std::cout << "Matrix type flag: " << float_or_int << std::endl;
-            counter++; // increment counter after reading the first line
-        } else {
-            // For the subsequent lines, store matrix data
-            std::vector<int> v_numI; // temporary vector for integers
-            std::vector<double> v_numD; // temporary vector for doubles
+        if (counter == 0) { //read first line for _N and type flag
+            ss >> size_n >> float_or_int; // got this easir way of storing size_n and float_or_int from ChatGPT
+            counter++; // increment counter by 1
+        } else { //now store data in matrices for rest of lines
+            std::vector<int> v_numI; // v_numI holds ints in vector 
+            std::vector<double> v_numD; // v_numD holds doubles in vector
             
-            while (std::getline(ss, num, ' ')) { // split by space and process each number
-                if (float_or_int == 0) { // if the matrix is an integer matrix
-                    v_numI.push_back(std::stoi(num)); // convert string to int and store it
-                } else { // if the matrix is a double matrix
-                    v_numD.push_back(std::stod(num)); // convert string to double and store it
+            while (std::getline(ss, num, ' ')) { //processes each line as num and split by space
+                if (float_or_int == 0) { //True if int matrix
+                    v_numI.push_back(std::stoi(num)); //store num as int in v_numI
+                } else { //True if double matrix
+                    v_numD.push_back(std::stod(num)); //store num as doubble in v_numD
                 }
             }
             
-            // Add the row to the appropriate matrix based on the flag
-            if (counter <= size_n) {
-                if (float_or_int == 0) {
-                    matrix1_i.push_back(v_numI); // add to integer matrix1
-                } else {
-                    matrix1_d.push_back(v_numD); // add to double matrix1
+            if (counter <= size_n) { //if True add to matrix1
+                if (float_or_int == 0) { //True if int matrix
+                    matrix1_i.push_back(v_numI); //v_numI added to matrix1_i 
+                } else { //runs if doubble matrix
+                    matrix1_d.push_back(v_numD); //v_numD added to matrix1_d
                 }
             } else {
-                if (float_or_int == 0) {
-                    matrix2_i.push_back(v_numI); // add to integer matrix2
-                } else {
-                    matrix2_d.push_back(v_numD); // add to double matrix2
+                if (float_or_int == 0) { //True if int matrix
+                    matrix2_i.push_back(v_numI); //v_numI added to matrix2_i 
+                } else { //runs if doubble matrix
+                    matrix2_d.push_back(v_numD); //v_numD added to matrix2_d
                 }
             }
-            counter++; // increment counter after processing each line
+            counter++; //increment counter by 1
         }
     }
 
@@ -217,13 +212,13 @@ int main(int argc, char *argv[]) {
     file.close(); //closes file
 
     if (float_or_int == 0){
-        Matrix<int> matrix1 = Matrix<int>(matrix1_i); //creates a Matrix object out of matrix1 and stores it in m1
-        Matrix<int> matrix2 = Matrix<int>(matrix2_i); //creates a Matrix object out of matrix2 and stores it in m2
-        matrix_operations(matrix1, matrix2);
+        Matrix<int> matrix1 = Matrix<int>(matrix1_i); //creates a Matrix object out of matrix1_i and stores it in m1
+        Matrix<int> matrix2 = Matrix<int>(matrix2_i); //creates a Matrix object out of matrix2_i and stores it in m2
+        matrix_operations(matrix1, matrix2); //calls matrix_operations which handles all the matrix operations for matrix1 and matrix2
     } else {
-        Matrix<double> matrix1 = Matrix<double>(matrix1_d); //creates a Matrix object out of matrix1 and stores it in m1
-        Matrix<double> matrix2 = Matrix<double>(matrix2_d); //creates a Matrix object out of matrix2 and stores it in m2
-        matrix_operations(matrix1, matrix2);
+        Matrix<double> matrix1 = Matrix<double>(matrix1_d); //creates a Matrix object out of matrix1_d and stores it in m1
+        Matrix<double> matrix2 = Matrix<double>(matrix2_d); //creates a Matrix object out of matrix2_d and stores it in m2
+        matrix_operations(matrix1, matrix2); //calls matrix_operations which handles all the matrix operations for matrix1 and matrix2
     }
     return 0; //returns to terminate program 
 }
