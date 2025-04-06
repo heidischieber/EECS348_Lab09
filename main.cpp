@@ -159,9 +159,11 @@ int main(int argc, char *argv[]) {
     }
 
     std::string line; //variable line ~ type: string
-    std::vector<std::string> contents; //variable contents ~ a vector of strings
+
     std::vector<std::vector<int> > matrix1_i; //variable matrix1 ~ a vector of vectors of ints
     std::vector<std::vector<int> > matrix2_i; //variable matrix2 ~ a vector of vectors of ints 
+    std::vector<int> v_numI; //vector of ints called v_num
+    std::vector<double> v_numD; //vector of ints called v_num
     std::vector<std::vector<double> > matrix1_d; //variable matrix1 ~ a vector of vectors of ints
     std::vector<std::vector<double> > matrix2_d; //variable matrix2 ~ a vector of vectors of ints 
     
@@ -170,38 +172,47 @@ int main(int argc, char *argv[]) {
     std::size_t size_n; //size of matrices stored in size_n
     int float_or_int; //0 for int and 1 for double precision floating point
 
-    while (std::getline(file, line)){ //while loop's condition evaluates as ture whiel there is a line to get from file ~ and the line is stored in line 
-        line.erase(std::remove(line.begin(), line.end(), '\n'), line.end()); //from google AI overview ~ shows how to get rid of trailing and leading \n characters
-        std::stringstream ss(line); //creates a stringstream of line called ss ~ got from ChatGPT
-        std::vector<int> v_numI; //vector of ints called v_num
-        std::vector<double> v_numD; //vector of ints called v_num
-        while (getline(ss, num, ' ')){ //got this from geeksforgeeks ~ delimts by space and stores values one at a time in num
-            if (counter == 0){ //True if couter is 0
-                size_n = num[0]; //size_n is set to content of num[0]
-                float_or_int = num[1];
-                counter++; //increments counter
-                /*if (float_or_int == 0){
-                    v_numI.push_back(std::stoi(num)); //adds int num to v_num vector
-                } else {
-                    v_numD.push_back(static_cast<double>(stoi(num))); //adds int num to v_num vector
-                }*/
-            }
-            if (counter <= size_n){ //True if counter is less than or equal to size_n ~ means add to matrix1
-                if (float_or_int == 0){
-                    matrix1_i.push_back(v_numI); //adds v_num vector of ints to matrix1 vector
-                } else {
-                    matrix1_d.push_back(v_numD); //adds v_num vector of ints to matrix1 vector
-                }
-            } else{ //True if counter is greater than size_n ~ means add to matrix2
-                if (float_or_int == 0){
-                    matrix2_i.push_back(v_numI); //adds v_num vector of ints to matrix2 vector
-                } else {
-                    matrix2_d.push_back(v_numD); //adds v_num vector of ints to matrix2 vector
+    while (std::getline(file, line)) { // while loop to get each line from the file
+        line.erase(std::remove(line.begin(), line.end(), '\n'), line.end()); // remove any trailing newline characters
+        std::stringstream ss(line); // creates a stringstream of line called ss
+        
+        // Read the first line to get the size of the matrices and type flag
+        if (counter == 0) {
+            ss >> size_n >> float_or_int; // first two values are size_n and float_or_int
+            std::cout << "Matrix size: " << size_n << std::endl;
+            std::cout << "Matrix type flag: " << float_or_int << std::endl;
+            counter++; // increment counter after reading the first line
+        } else {
+            // For the subsequent lines, store matrix data
+            std::vector<int> v_numI; // temporary vector for integers
+            std::vector<double> v_numD; // temporary vector for doubles
+            
+            while (std::getline(ss, num, ' ')) { // split by space and process each number
+                if (float_or_int == 0) { // if the matrix is an integer matrix
+                    v_numI.push_back(std::stoi(num)); // convert string to int and store it
+                } else { // if the matrix is a double matrix
+                    v_numD.push_back(std::stod(num)); // convert string to double and store it
                 }
             }
-            counter++; //increments counter 
+            
+            // Add the row to the appropriate matrix based on the flag
+            if (counter <= size_n) {
+                if (float_or_int == 0) {
+                    matrix1_i.push_back(v_numI); // add to integer matrix1
+                } else {
+                    matrix1_d.push_back(v_numD); // add to double matrix1
+                }
+            } else {
+                if (float_or_int == 0) {
+                    matrix2_i.push_back(v_numI); // add to integer matrix2
+                } else {
+                    matrix2_d.push_back(v_numD); // add to double matrix2
+                }
+            }
+            counter++; // increment counter after processing each line
         }
     }
+
 
     file.close(); //closes file
 
